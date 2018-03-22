@@ -10,7 +10,7 @@ import requests
 from subprocess import call
 import os.path
 from PIL import Image
-from StringIO import StringIO
+from io import BytesIO
 
 
 # In[2]:
@@ -41,8 +41,8 @@ from StringIO import StringIO
 # In[17]:
 
 count=0
-if not os.path.exists('./data'):
-	os.makedirs('./data')
+if not os.path.exists('./data/train'):
+	os.makedirs('./data/train')
 
 with open("imagenet_URLs.txt","r") as fp:
 	for line in fp:
@@ -53,18 +53,18 @@ with open("imagenet_URLs.txt","r") as fp:
 		try:
 			request = requests.get(url)
 		except:
-			print "Broken Link!"
+			print ("Broken Link!")
 			continue
 
 		print url, Id
 		if request.status_code == 200:
 			try:
-				img = Image.open(StringIO(request.content)).convert("RGB")
+				img = Image.open(BytesIO(request.content)).convert("RGB")
 			except:
-				print "Valid Link, but not valid JPG!"
+				print ("Valid Link, but not valid JPG!")
 				continue
 			count+=1
-			print count
+			print (count)
 			print('Web site exists... Downloading Image')
 			call('wget -O data/'+ Id + ".jpg " + url,shell=True)
 			if count == 10000:
