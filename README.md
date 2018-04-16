@@ -1,3 +1,0 @@
-# Deep-Steganography
-
-Steganography  is  the  practice  of  concealing  a  secret  message  within  another,ordinary, message.  Commonly, steganography is used to unobtrusively hide asmall message within the noisy regions of a larger image.  In this project, we will be exploring embedding full size color images into container images usingdeep neural networks. This would involve training a neural network with existingsteganography algorithms in addition to optimizing the losses between the encodedand original images.This includes techniques to identify the best container imagefor a given hidden image and optimal locations on the container image to hide thehidden image pixels such that there is minimal alteration.
