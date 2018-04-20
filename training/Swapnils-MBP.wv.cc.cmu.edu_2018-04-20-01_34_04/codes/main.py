@@ -453,14 +453,13 @@ def test(test_loader, epoch, Hnet, Rnet, criterion):
     for i, data in enumerate(test_loader, 0):
         Hnet.zero_grad()
         Rnet.zero_grad()
-        #all_pics = data  # allpics contian cover_img and secret_img ,label is not needed
-        secret_img , cover_img = data
-        #import pdb;pdb.set_trace()
-        this_batch_size = int(secret_img.size()[0])#int(all_pics.size()[0] / 2)  # in order to handle the final batch which may not have opt.size
+        all_pics = data  # allpics contian cover_img and secret_img ,label is not needed
+        import pdb;pdb.set_trace()
+        this_batch_size = int(all_pics.size()[0])#int(all_pics.size()[0] / 2)  # in order to handle the final batch which may not have opt.size
 
         # half of the front is as cover_img ，half of the end is as secret_img
-        #cover_img = all_pics[1]#all_pics[0:this_batch_size, :, :, :]  # batchSize,3,256,256
-        #secret_img = 2#all_pics[this_batch_size:this_batch_size * 2, :, :, :]
+        cover_img = all_pics[1]#all_pics[0:this_batch_size, :, :, :]  # batchSize,3,256,256
+        secret_img = 2#all_pics[this_batch_size:this_batch_size * 2, :, :, :]
 
         # concat cover and original secret get the concat_img with 6 channels
         concat_img = torch.cat([cover_img, secret_img], dim=1)
