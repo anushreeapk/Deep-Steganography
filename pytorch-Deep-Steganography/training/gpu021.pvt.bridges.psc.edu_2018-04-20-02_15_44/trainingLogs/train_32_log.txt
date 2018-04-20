@@ -1,0 +1,93 @@
+Namespace(Hnet='', Rnet='', batchSize=32, beta=0.75, beta1=0.5, cuda=True, dataset='train', debug=False, decay_round=10, hostname='gpu021.pvt.bridges.psc.edu', imageSize=256, logFrequency=10, lr=0.001, ngpu=1, niter=100, outckpts='./training/gpu021.pvt.bridges.psc.edu_2018-04-20-02_15_44/checkPoints', outcodes='./training/gpu021.pvt.bridges.psc.edu_2018-04-20-02_15_44/codes', outlogs='./training/gpu021.pvt.bridges.psc.edu_2018-04-20-02_15_44/trainingLogs', remark='', resultPicFrequency=100, test='../', testPics='./training/gpu021.pvt.bridges.psc.edu_2018-04-20-02_15_44/testPics', trainpics='./training/gpu021.pvt.bridges.psc.edu_2018-04-20-02_15_44/trainPics', validationpics='./training/gpu021.pvt.bridges.psc.edu_2018-04-20-02_15_44/validationPics', workers=8)
+UnetGenerator(
+  (model): UnetSkipConnectionBlock(
+    (model): Sequential(
+      (0): Conv2d(6, 64, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+      (1): UnetSkipConnectionBlock(
+        (model): Sequential(
+          (0): LeakyReLU(0.2, inplace)
+          (1): Conv2d(64, 128, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+          (2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True)
+          (3): UnetSkipConnectionBlock(
+            (model): Sequential(
+              (0): LeakyReLU(0.2, inplace)
+              (1): Conv2d(128, 256, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+              (2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True)
+              (3): UnetSkipConnectionBlock(
+                (model): Sequential(
+                  (0): LeakyReLU(0.2, inplace)
+                  (1): Conv2d(256, 512, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+                  (2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True)
+                  (3): UnetSkipConnectionBlock(
+                    (model): Sequential(
+                      (0): LeakyReLU(0.2, inplace)
+                      (1): Conv2d(512, 512, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+                      (2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True)
+                      (3): UnetSkipConnectionBlock(
+                        (model): Sequential(
+                          (0): LeakyReLU(0.2, inplace)
+                          (1): Conv2d(512, 512, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+                          (2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True)
+                          (3): UnetSkipConnectionBlock(
+                            (model): Sequential(
+                              (0): LeakyReLU(0.2, inplace)
+                              (1): Conv2d(512, 512, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+                              (2): ReLU(inplace)
+                              (3): ConvTranspose2d(512, 512, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+                              (4): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True)
+                            )
+                          )
+                          (4): ReLU(inplace)
+                          (5): ConvTranspose2d(1024, 512, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+                          (6): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True)
+                        )
+                      )
+                      (4): ReLU(inplace)
+                      (5): ConvTranspose2d(1024, 512, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+                      (6): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True)
+                    )
+                  )
+                  (4): ReLU(inplace)
+                  (5): ConvTranspose2d(1024, 256, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+                  (6): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True)
+                )
+              )
+              (4): ReLU(inplace)
+              (5): ConvTranspose2d(512, 128, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+              (6): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True)
+            )
+          )
+          (4): ReLU(inplace)
+          (5): ConvTranspose2d(256, 64, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+          (6): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True)
+        )
+      )
+      (2): ReLU(inplace)
+      (3): ConvTranspose2d(128, 3, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+      (4): Sigmoid()
+    )
+  )
+)
+Total number of parameters: 41832067
+RevealNet(
+  (main): Sequential(
+    (0): Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True)
+    (2): ReLU(inplace)
+    (3): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (4): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True)
+    (5): ReLU(inplace)
+    (6): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (7): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True)
+    (8): ReLU(inplace)
+    (9): Conv2d(256, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (10): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True)
+    (11): ReLU(inplace)
+    (12): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (13): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True)
+    (14): ReLU(inplace)
+    (15): Conv2d(64, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (16): Sigmoid()
+  )
+)
+Total number of parameters: 742659

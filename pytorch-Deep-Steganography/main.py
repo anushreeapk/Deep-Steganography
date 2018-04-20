@@ -22,7 +22,7 @@ import torch.nn.parallel
 import torch.optim as optim
 import torch.utils.data
 import torchvision.utils as vutils
-from tensorboardX import SummaryWriter
+#from tensorboardX import SummaryWriter
 from torch.autograd import Variable
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 from torch.utils.data import DataLoader
@@ -171,7 +171,7 @@ def main():
 
     if opt.test == '':
         # tensorboardX writer
-        writer = SummaryWriter(comment='**' + opt.remark)
+        #writer = SummaryWriter(comment='**' + opt.remark)
         ##############   获取数据集   ############################
         traindir = os.path.join(DATA_DIR, 'train')
         valdir = os.path.join(DATA_DIR, 'val')
