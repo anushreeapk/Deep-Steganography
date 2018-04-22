@@ -174,17 +174,24 @@ def main():
         #writer = SummaryWriter(comment='**' + opt.remark)
         ##############   获取数据集   ############################
         traindir = os.path.join(DATA_DIR, 'train')
-        valdir = os.path.join(DATA_DIR, 'val')
-        train_dataset = MyImageFolder(
-            traindir,  # 对数据进行预处理
+        cover_train_dir = os.path.join(traindir, 'cover_images')
+        secret_train_dir = os.path.join(traindir, 'secret_images')
 
+        valdir = os.path.join(DATA_DIR, 'val')
+        cover_val_dir = os.path.join(valdir, 'cover_images')
+        secret_val_dir = os.path.join(valdir, 'secret_images')
+
+        train_dataset = MyImageFolder(
+            cover_train_dir,  # 对数据进行预处理
+            secret_train_dir,
             transforms.Compose([  # 将几个transforms 组合在一起
                 transforms.Resize([opt.imageSize, opt.imageSize]),  # 随机切再resize成给定的size大小
                 transforms.ToTensor(),
                 # 把一个取值范围是[0,255]或者shape为(H,W,C)的numpy.ndarray，转换成形状为[C,H,W]，取值范围是[0,1.0]的torch.FloadTensor
             ]))
         val_dataset = MyImageFolder(
-            valdir,  # 对数据进行预处理
+            cover_val_dir,  # 对数据进行预处理
+            secret_val_dir,
             transforms.Compose([  # 将几个transforms 组合在一起
                 transforms.Resize([opt.imageSize, opt.imageSize]),  # 随机切再resize成给定的size大小
                 transforms.ToTensor(),  # 把一个取值范围是[0,255]或者shape为(H,W,C)的numpy.ndarray，
@@ -196,7 +203,7 @@ def main():
         opt.Hnet = "./checkPoint/netH_epoch_73,sumloss=0.000447,Hloss=0.000258.pth"
         opt.Rnet = "./checkPoint/netR_epoch_73,sumloss=0.000447,Rloss=0.000252.pth"
         testdir = opt.test
-        cover_test_dir = os.path.join(testdir, 'high-res-cover-images')
+        cover_test_dir = os.path.join(testdir, 'cover_images')
         secret_test_dir = os.path.join(testdir, 'secret_images')
 
         test_dataset = MyImageFolder(
@@ -301,12 +308,13 @@ def train(train_loader, epoch, Hnet, Rnet, criterion):
         Hnet.zero_grad()
         Rnet.zero_grad()
 
-        all_pics = data  # allpics包含coverImg 和 secretImg,不需要label
-        this_batch_size = int(all_pics.size()[0] / 2)  # 处理每个epoch 最后一个batch可能不足opt.bachsize
+        #all_pics = data  # allpics包含coverImg 和 secretImg,不需要label
+        secret_img, cover_img = data
+        this_batch_size = int(secret_img.size()[0] / 2)  # 处理每个epoch 最后一个batch可能不足opt.bachsize
 
         # 前面一半图片作为coverImg ，后面一半图片作为secretImg
-        cover_img = all_pics[0:this_batch_size, :, :, :]  # batchsize,3,256,256
-        secret_img = all_pics[this_batch_size:this_batch_size * 2, :, :, :]
+        #cover_img = all_pics[0:this_batch_size, :, :, :]  # batchsize,3,256,256
+        #secret_img = all_pics[this_batch_size:this_batch_size * 2, :, :, :]
 
         # 将图片concat到一起，得到六通道图片作为H网络的输入
         concat_img = torch.cat([cover_img, secret_img], dim=1)
@@ -391,12 +399,13 @@ def validation(val_loader, epoch, Hnet, Rnet, criterion):
     for i, data in enumerate(val_loader, 0):
         Hnet.zero_grad()
         Rnet.zero_grad()
-        all_pics = data  # allpics包含coverImg 和 secretImg,不需要label
-        this_batch_size = int(all_pics.size()[0] / 2)  # 处理每个epoch 最后一个batch可能不足opt.bachsize
+        #all_pics = data  # allpics包含coverImg 和 secretImg,不需要label
+        secret_img, cover_img = data
+        this_batch_size = int(secret_img.size()[0])#int(all_pics.size()[0] / 2)  # 处理每个epoch 最后一个batch可能不足opt.bachsize
 
         # 前面一半图片作为coverImg ，后面一半图片作为secretImg
-        cover_img = all_pics[0:this_batch_size, :, :, :]  # batchsize,3,256,256
-        secret_img = all_pics[this_batch_size:this_batch_size * 2, :, :, :]
+        #cover_img = all_pics[0:this_batch_size, :, :, :]  # batchsize,3,256,256
+        #secret_img = all_pics[this_batch_size:this_batch_size * 2, :, :, :]
 
         # 将图片concat到一起，得到六通道图片作为H网络的输入
         concat_img = torch.cat([cover_img, secret_img], dim=1)
